@@ -8,7 +8,6 @@ from django.db import models
 class Character(models.Model):
     name = models.CharField(max_length=30)
 
-
 class Book(models.Model):
     title = models.CharField(max_length=100)
     isbn = models.BigIntegerField(unique=True)
@@ -17,3 +16,8 @@ class Book(models.Model):
 
     class Meta:
         ordering = ('id',)
+
+class LiteraryAward(models.Model):
+    name = models.CharField(max_length=100)
+    year = models.IntegerField()
+    book = models.ForeignKey(Book,related_name='awards',null=True,on_delete=models.SET_NULL)
