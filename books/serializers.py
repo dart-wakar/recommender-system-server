@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from books.models import Book,LiteraryAward,VotedGenre,Character,Author,BookSeries,Genre
+from books.models import Book,LiteraryAward,VotedGenre,Character,Author,BookSeries,Genre,Place,Subject
 
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,6 +20,16 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ('id','name')
+
+class PlaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Place
+        fields = ('id','name')
+
+class SubjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = ('id','subject_type','subject_name','subject_ol_url')
 
 class VotedGenreSerializer(serializers.ModelSerializer):
     class Meta:
