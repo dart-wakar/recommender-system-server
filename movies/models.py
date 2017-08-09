@@ -9,6 +9,12 @@ class ProductionCountry(models.Model):
     iso_3166_1 = models.CharField(max_length=3,blank=True,null=True)
     name = models.CharField(max_length=30)
 
+class MoviesCollection(models.Model):
+    tmdb_id = models.IntegerField(blank=True,null=True)
+    name = models.CharField(max_length=100,blank=True,null=True)
+    poster_path = models.CharField(max_length=300,blank=True,null=True)
+    backdrop_path = models.CharField(max_length=300,blank=True,null=True)
+
 class Movie(models.Model):
     tmdb_id = models.IntegerField(blank=True,null=True)
     original_title = models.CharField(max_length=100,blank=True,null=True)
