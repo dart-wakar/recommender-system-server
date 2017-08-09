@@ -53,6 +53,8 @@ class Book(models.Model):
     author = models.ForeignKey(Author,related_name='author',null=True,on_delete=models.SET_NULL)
     places = models.ManyToManyField(Place)
     subjects = models.ManyToManyField(Subject)
+    average_rating = models.FloatField()
+    votes_count = models.IntegerField()
 
     class Meta:
         ordering = ('id',)
