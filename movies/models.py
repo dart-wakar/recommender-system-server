@@ -15,6 +15,10 @@ class MoviesCollection(models.Model):
     poster_path = models.CharField(max_length=300,blank=True,null=True)
     backdrop_path = models.CharField(max_length=300,blank=True,null=True)
 
+class MovieGenres(models.Model):
+    tmdb_id = models.IntegerField(blank=True,null=True)
+    name = models.CharField(max_length=30,blank=True,null=True)
+
 class Movie(models.Model):
     tmdb_id = models.IntegerField(blank=True,null=True)
     original_title = models.CharField(max_length=100,blank=True,null=True)
