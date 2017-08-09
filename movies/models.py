@@ -5,6 +5,10 @@ from django.db import models
 
 # Create your models here.
 
+class ProductionCountry(models.Model):
+    iso_3166_1 = models.CharField(max_length=3,blank=True,null=True)
+    name = models.CharField(max_length=30)
+
 class Movie(models.Model):
     tmdb_id = models.IntegerField(blank=True,null=True)
     original_title = models.CharField(max_length=100,blank=True,null=True)
