@@ -32,6 +32,7 @@ class KeywordSerializer(serializers.ModelSerializer):
         fields = ('id','tmdb_id','name')
 
 class VotedMovieGenreSerializer(serializers.ModelSerializer):
+    genre = MovieGenreSerializer()
     class Meta:
         model = VotedMovieGenre
         fields = ('id','genre','votes','movie')
