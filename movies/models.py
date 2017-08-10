@@ -15,7 +15,7 @@ class MoviesCollection(models.Model):
     poster_path = models.CharField(max_length=300,blank=True,null=True)
     backdrop_path = models.CharField(max_length=300,blank=True,null=True)
 
-class MovieGenres(models.Model):
+class MovieGenre(models.Model):
     tmdb_id = models.IntegerField(blank=True,null=True)
     name = models.CharField(max_length=30,blank=True,null=True)
 
@@ -53,3 +53,35 @@ class Movie(models.Model):
     tmdb_vote_count = models.IntegerField(blank=True,null=True)
     average_rating = models.FloatField()
     votes_count = models.IntegerField()
+    production_countries = models.ManyToManyField(ProductionCountry)
+    belongs_to_collection = models.ForeignKey(MoviesCollection,related_name='collection',null=True,on_delete=models.SET_NULL)
+    production_companies = models.ManyToManyField(ProductionCompany)
+    spoken_languages = models.ManyToManyField(SpokenLanguage)
+    genres_related = models.ManyToManyField(MovieGenre)
+    keywords = models.ManyToManyField(Keyword)
+
+class VotedMovieGenre(models.Model):
+    genre = models.ForeignKey(MovieGenre,related_name='genre')
+    votes = models.IntegerField(blank=True,default=0)
+    movie = models.ForeignKey(Movie,related_name='genres_info',null=True,on_delete=models.SET_NULL)
+
+class VotedKeyword(models.Model):
+    keyword = models.ForeignKey(Keyword,related_name='keyword')
+    votes = models.IntegerField(blank=True,default=0)
+    movie = models.ForeignKey(Movie,related_name='keywords_info',null=True,on_delete=models.SET_NULL)
+
+class SimilarMovie(models.Model):
+    similar_movie = models.ForeignKey(Movie,related_name='similar_movie')
+    similarity_index = models.FloatField()
+    movie = models.ForeignKey(Movie,related_name='similar_movies_info',null=True,on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ('movie','similarity_index')
+
+class RecommendedMovie(models.Model):
+    recommended_movie = models.ForeignKey(Movie,related_name='recommended_movie')
+    recommendation_index = models.FloatField()
+    movie = models.ForeignKey(Movie,related_name='recommended_movies_info',null=True,on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ('movie','recommendation_index')
