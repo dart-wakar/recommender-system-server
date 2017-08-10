@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from movies.models import Movie,MoviesCollection,ProductionCountry,ProductionCompany,SpokenLanguage,MovieGenre,Keyword,VotedMovieGenre
+from movies.models import Movie,MoviesCollection,ProductionCountry,ProductionCompany,SpokenLanguage,MovieGenre,Keyword,VotedMovieGenre,SimilarMovie
 
 class MoviesCollectionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,6 +37,17 @@ class VotedMovieGenreSerializer(serializers.ModelSerializer):
         model = VotedMovieGenre
         fields = ('id','genre','votes','movie')
 
+class MovieCompactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ('id','title','original_title','poster_path','backdrop_path')
+
+class SimilarMovieSerializer(serializers.ModelSerializer):
+    similar_movie = MovieCompactSerializer()
+    class Meta:
+        model = SimilarMovie
+        fields = ('id','similar_movie','similarity_index','movie')
+
 class MovieSerializer(serializers.ModelSerializer):
     belongs_to_collection = MoviesCollectionSerializer()
     production_countries = ProductionCountrySerializer(many=True,read_only=True)
@@ -45,6 +56,7 @@ class MovieSerializer(serializers.ModelSerializer):
     genres_related = MovieGenreSerializer(many=True,read_only=True)
     keywords = KeywordSerializer(many=True,read_only=True)
     genres_info = VotedMovieGenreSerializer(many=True,allow_null=True,required=False)
+    similar_movies_info = SimilarMovieSerializer(many=True,allow_null=True,required=False)
     class Meta:
         model = Movie
-        fields = ('id','tmdb_id','original_title','title','poster_path','backdrop_path','adult','budget','homepage','original_language','overview','popularity','release_date','revenue','runtime','status','tagline','video','tmdb_average_rating','tmdb_vote_count','average_rating','votes_count','belongs_to_collection','production_countries','production_companies','spoken_languages','genres_related','keywords','genres_info')
+        fields = ('id','tmdb_id','original_title','title','poster_path','backdrop_path','adult','budget','homepage','original_language','overview','popularity','release_date','revenue','runtime','status','tagline','video','tmdb_average_rating','tmdb_vote_count','average_rating','votes_count','belongs_to_collection','production_countries','production_companies','spoken_languages','genres_related','keywords','genres_info','similar_movies_info')
