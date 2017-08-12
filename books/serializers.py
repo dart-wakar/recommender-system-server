@@ -36,6 +36,12 @@ class VotedGenreSerializer(serializers.ModelSerializer):
         model = VotedGenre
         fields = ('id','genre','votes','book')
 
+class BookCompactSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer()
+    class Meta:
+        model = Book
+        fields = ('id','title','cover_url_small','cover_url_medium','cover_url_large','author')
+
 class BookSerializer(serializers.ModelSerializer):
     awards = serializers.PrimaryKeyRelatedField(many=True,queryset=LiteraryAward.objects.all(),allow_null=True,required=False)
     genres_info = serializers.PrimaryKeyRelatedField(many=True,queryset=VotedGenre.objects.all(),allow_null=True,required=False)

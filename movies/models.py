@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from books.models import Book
 
 # Create your models here.
 
@@ -82,6 +83,22 @@ class RecommendedMovie(models.Model):
     recommended_movie = models.ForeignKey(Movie,related_name='recommended_movie')
     recommendation_index = models.FloatField()
     movie = models.ForeignKey(Movie,related_name='recommended_movies_info',null=True,on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ('movie','recommendation_index')
+
+class SimilarBook(models.Model):
+    similar_book = models.ForeignKey(Book,related_name='similar_book')
+    similarity_index = models.FloatField()
+    movie = models.ForeignKey(Movie,related_name='similar_books_info',null=True,on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ('movie','similarity_index')
+
+class RecommendedBook(models.Model):
+    recommended_book = models.ForeignKey(Book,related_name='recommended_book')
+    recommendation_index = models.FloatField()
+    movie = models.ForeignKey(Movie,related_name='recommended_books_info',null=True,on_delete=models.SET_NULL)
 
     class Meta:
         ordering = ('movie','recommendation_index')
