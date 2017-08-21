@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'books.apps.BooksConfig',
     'movies.apps.MoviesConfig',
+    'relations.apps.RelationsConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from movies.models import Movie,MoviesCollection,ProductionCountry,ProductionCompany,SpokenLanguage,MovieGenre,Keyword,VotedMovieGenre,VotedKeyword,SimilarMovie,RecommendedMovie,SimilarBook,RecommendedBook
-from books.models import Book
+from movies.models import Movie,MoviesCollection,ProductionCountry,ProductionCompany,SpokenLanguage,MovieGenre,Keyword,VotedMovieGenre,VotedKeyword,SimilarMovie,RecommendedMovie
+from relations.models import MovieBookSimilarRelation,MovieBookRecommendationRelation
 from books.serializers import BookCompactSerializer
 
 class MoviesCollectionSerializer(serializers.ModelSerializer):
@@ -54,25 +54,25 @@ class SimilarMovieSerializer(serializers.ModelSerializer):
     similar_movie = MovieCompactSerializer()
     class Meta:
         model = SimilarMovie
-        fields = ('id','similar_movie','similarity_index','movie')
+        fields = ('id','movie','similar_movie','similarity_index')
 
 class RecommendedMovieSerializer(serializers.ModelSerializer):
     recommended_movie = MovieCompactSerializer()
     class Meta:
         model = RecommendedMovie
-        fields = ('id','recommended_movie','recommendation_index','movie')
+        fields = ('id','movie','recommended_movie','recommendation_index')
 
 class SimilarBookSerializer(serializers.ModelSerializer):
-    similar_book = BookCompactSerializer()
+    book = BookCompactSerializer()
     class Meta:
-        model = SimilarBook
-        fields = ('id','similar_book','similarity_index','movie')
+        model = MovieBookSimilarRelation
+        fields = ('id','book','similarity_index','movie')
 
 class RecommendedBookSerializer(serializers.ModelSerializer):
-    recommended_book = BookCompactSerializer()
+    book = BookCompactSerializer()
     class Meta:
-        model = RecommendedBook
-        fields = ('id','recommended_book','recommendation_index','movie')
+        model = MovieBookRecommendationRelation
+        fields = ('id','book','recommendation_index','movie')
 
 class MovieSerializer(serializers.ModelSerializer):
     belongs_to_collection = MoviesCollectionSerializer()
@@ -85,6 +85,8 @@ class MovieSerializer(serializers.ModelSerializer):
     keywords_info = VotedKeywordSerializer(many=True,allow_null=True,required=False)
     similar_movies_info = SimilarMovieSerializer(many=True,allow_null=True,required=False)
     recommended_movies_info = RecommendedMovieSerializer(many=True,allow_null=True,required=False)
+    similar_books_info = SimilarBookSerializer(many=True,allow_null=True,required=False)
+    recommended_books_info = RecommendedBookSerializer(many=True,allow_null=True,required=False)
     class Meta:
         model = Movie
-        fields = ('id','tmdb_id','original_title','title','poster_path','backdrop_path','adult','budget','homepage','original_language','overview','popularity','release_date','revenue','runtime','status','tagline','video','tmdb_average_rating','tmdb_vote_count','average_rating','votes_count','belongs_to_collection','production_countries','production_companies','spoken_languages','genres_related','keywords','genres_info','keywords_info','similar_movies_info','recommended_movies_info')
+        fields = ('id','tmdb_id','original_title','title','poster_path','backdrop_path','adult','budget','homepage','original_language','overview','popularity','release_date','revenue','runtime','status','tagline','video','tmdb_average_rating','tmdb_vote_count','average_rating','votes_count','belongs_to_collection','production_countries','production_companies','spoken_languages','genres_related','keywords','genres_info','keywords_info','similar_movies_info','recommended_movies_info','similar_books_info','recommended_books_info')

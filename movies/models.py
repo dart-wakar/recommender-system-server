@@ -34,6 +34,7 @@ class Keyword(models.Model):
 
 class Movie(models.Model):
     tmdb_id = models.IntegerField(blank=True,null=True)
+    imdb_id = models.CharField(max_length=10,blank=True,null=True)
     original_title = models.CharField(max_length=100,blank=True,null=True)
     title = models.CharField(max_length=100,blank=True,null=True)
     poster_path = models.CharField(max_length=300,blank=True,null=True)
@@ -52,8 +53,8 @@ class Movie(models.Model):
     video = models.BooleanField()
     tmdb_average_rating = models.FloatField(blank=True,null=True)
     tmdb_vote_count = models.IntegerField(blank=True,null=True)
-    average_rating = models.FloatField()
-    votes_count = models.IntegerField()
+    average_rating = models.FloatField(default=0.0)
+    votes_count = models.IntegerField(default=0)
     production_countries = models.ManyToManyField(ProductionCountry)
     belongs_to_collection = models.ForeignKey(MoviesCollection,related_name='collection',null=True,on_delete=models.SET_NULL)
     production_companies = models.ManyToManyField(ProductionCompany)
@@ -72,33 +73,17 @@ class VotedKeyword(models.Model):
     movie = models.ForeignKey(Movie,related_name='keywords_info',null=True,on_delete=models.SET_NULL)
 
 class SimilarMovie(models.Model):
-    similar_movie = models.ForeignKey(Movie,related_name='similar_movie')
-    similarity_index = models.FloatField()
+    similar_movie = models.ForeignKey(Movie,related_name='similar_movie',null=True,on_delete=models.SET_NULL)
     movie = models.ForeignKey(Movie,related_name='similar_movies_info',null=True,on_delete=models.SET_NULL)
+    similarity_index = models.FloatField()
 
     class Meta:
-        ordering = ('movie','similarity_index')
+        ordering = ['-similarity_index',]
 
 class RecommendedMovie(models.Model):
-    recommended_movie = models.ForeignKey(Movie,related_name='recommended_movie')
-    recommendation_index = models.FloatField()
     movie = models.ForeignKey(Movie,related_name='recommended_movies_info',null=True,on_delete=models.SET_NULL)
-
-    class Meta:
-        ordering = ('movie','recommendation_index')
-
-class SimilarBook(models.Model):
-    similar_book = models.ForeignKey(Book,related_name='similar_book')
-    similarity_index = models.FloatField()
-    movie = models.ForeignKey(Movie,related_name='similar_books_info',null=True,on_delete=models.SET_NULL)
-
-    class Meta:
-        ordering = ('movie','similarity_index')
-
-class RecommendedBook(models.Model):
-    recommended_book = models.ForeignKey(Book,related_name='recommended_book')
+    recommended_movie = models.ForeignKey(Movie,related_name='recommended_movie',null=True,on_delete=models.SET_NULL)
     recommendation_index = models.FloatField()
-    movie = models.ForeignKey(Movie,related_name='recommended_books_info',null=True,on_delete=models.SET_NULL)
 
     class Meta:
-        ordering = ('movie','recommendation_index')
+        ordering = ['-recommendation_index',]
